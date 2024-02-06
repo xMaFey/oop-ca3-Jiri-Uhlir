@@ -49,25 +49,29 @@ public class CA3_Question2
             int x = current.getRow();
             int y = current.getColumn();
 
-            arr[x][y] = num;
+            arr[x][y] = num++;
 
             //up
             if(x > 0 && arr[x - 1][y] == 0){
-                    values.push(new Pair(x - 1, y));
+                arr[x - 1][y] = num;
+                values.push(new Pair(x - 1, y));
             }
 
             //down
             if(x < arr.length - 1 && arr[x + 1][y] == 0){
+                arr[x + 1][y] = num;
                 values.push(new Pair(x + 1, y));
             }
 
             //left
             if(y > 0 && arr[x][y - 1] == 0){
+                arr[x][y - 1] = num;
                 values.push(new Pair(x, y - 1));
             }
 
             //right
             if(y < arr[x].length - 1 && arr[x][y + 1] == 0){
+                arr[x][y + 1] = num;
                 values.push(new Pair(x, y + 1));
             }
         }
