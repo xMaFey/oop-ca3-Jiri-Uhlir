@@ -5,34 +5,49 @@
 
 import java.util.Stack;
 import java.util.Scanner;
-import java.util.Collections;
 
 public class CA3_Question1
 {
+     static Stack<Integer> driveway = new Stack<>();
+     static Stack<Integer> street = new Stack<>();
 
     public static void runSimulation(Integer plateNumber)
     {
-        Stack<Integer> driveway = new Stack<Integer>();
-        Stack<Integer> street = new Stack<Integer>();
-
-        if(plateNumber < 0){
-            driveway.pop();
-            System.out.println("was popped out");
-        }
-
         if(plateNumber > 0){
-            plateNumber = plateNumber * -1;
             driveway.push(plateNumber);
-            System.out.println(plateNumber + " was pushed in the driveway");
+            System.out.println("Driveway stack: " + driveway);
+        }
+        else{
+            plateNumber = plateNumber * -1;
+            if(driveway.contains(plateNumber)){
+                while(!driveway.isEmpty()){
+                    int num = driveway.pop();
+                    if(plateNumber != num){
+                        street.push(num);
+                    }
+                }
+
+                while(!street.isEmpty()){
+                    driveway.push(street.pop());
+                }
+            }
+
+            System.out.println("Driveway stack: " + driveway);
         }
     }
 
     public static void main(String[] args) {
         Scanner number = new Scanner(System.in);  // Create a Scanner object
-        System.out.println("Enter license plate number: ");
+        System.out.println("Enter plate number: ");
+        int plateNumber = number.nextInt();  // Read user input
 
-        Integer plateNumber = number.nextInt();  // Read user input
+        while(plateNumber != 0) {
+            runSimulation(plateNumber);
 
-        runSimulation(plateNumber);
+            System.out.println("Enter plate number: ");
+            plateNumber = number.nextInt();  // Read user input
+        }
+
+        System.out.println("Closed - come back tomorrow");
     }
 }

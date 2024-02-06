@@ -1,17 +1,14 @@
-import java.util.ArrayDeque;
 import java.util.Scanner;
 import java.util.Stack;
-import java.util.Deque;
 
 /**
- *  Name:
- *  Class Group:
+ *  Name: Jiri Uhlir
+ *  Class Group: GD2b
  */
 public class CA3_Question2
 {
     /*
         Starter function to create the 2D array and populate it with 0
-
      */
     public static int[][]  floodFillStart() {
         Scanner kb = new Scanner(System.in);
@@ -23,7 +20,7 @@ public class CA3_Question2
                 arr[x][y] = 0;
             }
         }
-       return arr;
+        return arr;
     }
     /*
         Helper function to display the image
@@ -39,74 +36,82 @@ public class CA3_Question2
             System.out.println();
         }
     }
+
+    static Stack<Pair> values = new Stack<>();
     private static void fill(int r, int c, int[][] arr)
     {
-        ArrayDeque<Pair> stack = new ArrayDeque();
         int num = 1;
+        values.push(new Pair(r,c));
 
-        stack.push(new Pair(r, c));
+        while(!values.isEmpty()){
+            Pair current = values.pop();
 
-        while(!stack.isEmpty()){
-            Pair current = stack.pop();
+            int x = current.getRow();
+            int y = current.getColumn();
 
-            int x = current.getX();
-            int y = current.getY();
+            arr[x][y] = num;
 
-            arr[x][y] = num++;
-
+            //up
             if(x > 0 && arr[x - 1][y] == 0){
-                stack.push(new Pair(x, y));
+                    values.push(new Pair(x - 1, y));
             }
-            if(x < 9 && arr[x + 1][y] == 0){
-                stack.push(new Pair(x, y));
+
+            //down
+            if(x < arr.length - 1 && arr[x + 1][y] == 0){
+                values.push(new Pair(x + 1, y));
             }
+
+            //left
             if(y > 0 && arr[x][y - 1] == 0){
-                stack.push(new Pair(x, y));
+                values.push(new Pair(x, y - 1));
             }
-            if(y < 9 && arr[x][y + 1] == 0){
-                stack.push(new Pair(x, y));
+
+            //right
+            if(y < arr[x].length - 1 && arr[x][y + 1] == 0){
+                values.push(new Pair(x, y + 1));
             }
         }
     }
 
     public static void start()
     {
-       int[][] arr = floodFillStart();
-       display(arr);
-       fill(2, 3, arr);
-       display(arr);
+        int[][] arr = floodFillStart();
+        //display(arr);
 
+        fill(0,0, arr);
+        display(arr);
     }
+
     public static void main(String[] args) {
         start();
-        display(floodFillStart());
     }
 
 }
 
+
 class Pair{
-    int x;
-    int y;
+    int row;
+    int column;
 
-    public Pair(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Pair(int row, int column) {
+        this.row = row;
+        this.column = column;
     }
 
-    public int getX() {
-        return x;
+    public int getRow() {
+        return row;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setRow(int row) {
+        this.row = row;
     }
 
-    public int getY() {
-        return y;
+    public int getColumn() {
+        return column;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setColumn(int column) {
+        this.column = column;
     }
 }
 
