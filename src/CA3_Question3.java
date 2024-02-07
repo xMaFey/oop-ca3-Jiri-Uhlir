@@ -1,7 +1,7 @@
 import java.io.FileNotFoundException;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.TreeMap;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 
 /**
  *  Name: Jiri Uhlir
@@ -10,18 +10,38 @@ import java.util.TreeMap;
 
 public class CA3_Question3
 {
-    static Map<String, HashSet<Integer>> map = new TreeMap<>();
 
-    public static void readFile(String CA3_Question1)
-    {
-        //Map<String, HashSet<Integer>> map = new TreeMap<>();
+    public static void readFile(String fileName) {
+        try {
+            FileReader reader = new FileReader(fileName);
 
-        if(map.containsKey(token)){
-            map.get(token).add(lineNumber);
-        } else{
-            HashSet<Integer> set = new HashSet<>();
-            set.add(lineNumber);
-            map.put(token, set);
+            Scanner scan = new Scanner(reader);
+            scan.useDelimiter(("[^A-Za-z0-9]+"));
+
+            Map<String, List<Integer>> identifiersContainer = new HashMap<>();
+
+            int lineNumber = 1;
+
+            while (scan.hasNextLine()) {
+                String line = scan.nextLine();
+                Scanner lineScan = new Scanner(line);
+                lineScan.useDelimiter(("[^A-Za-z0-9]+"));
+
+                while (lineScan.hasNext()) {
+                    String identifier = lineScan.next();
+                    if (!identifiersContainer.containsKey(identifier)) {
+                        identifiersContainer.put(identifier, new ArrayList<>());
+                    }
+                    identifiersContainer.get(identifier).add(lineNumber);
+                }
+                lineNumber++;
+            }
+
+            for (Map.Entry<String, List<Integer>> entry : identifiersContainer.entrySet()) {
+                System.out.println("Identifier: " + entry.getKey() + ", " + "Line: " + entry.getValue());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
